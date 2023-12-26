@@ -2,6 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import css from './AddContactForm.module.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/operations';
+import { selectContacts } from '../../redux/selectors';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const initialValues = {
   name: '',
@@ -14,21 +19,25 @@ const schema = yup.object().shape({
 });
 
 const AddContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts)
 
-  // const handleSubmit = (data, { resetForm }) => {
-  //   const contNames = contacts.map(contact => contact.name);
-  //   if (!contNames.includes(data.name)) {
-  //     resetForm();
-  //     toast.success('Contact was ADDED');
-  //   } else {
-  //     toast.error('Contact with the same name has already exist!');
-  //   }
-  // };
+  const handleSubmit = (data, { resetForm }) => {
+    const contNames = contacts.map(contact => contact.name);
+    if (!contNames.includes(data.name)) {
+      dispatch(addContact({name: data.name, phone: data.number}));
+      resetForm();
+      toast.success('Contact was ADDED');
+    } else {
+      toast.error('Contact with the same name has already exist!');
+    }
+  };
 
   return (
     <Formik
       validationSchema={schema}
       initialValues={initialValues}
+      onSubmit={handleSubmit}
     >
       <Form className={css.contactForm} autoComplete="true">
         <label className={css.label} htmlFor="name"><span className={css.astericks}>&#42;</span>Name:
