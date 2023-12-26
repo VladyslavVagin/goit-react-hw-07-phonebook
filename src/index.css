@@ -44,3 +44,7 @@ h1 {
 h2 {
   color: #848181;
 }
+
+.loaderWrapper {
+  margin-top: 16px;
+}
