@@ -21,8 +21,8 @@ export const App = () => {
       <h1>Phonebook</h1>
       <AddContactForm />
       <h2>Contacts</h2>
-      {isLoading && !error && <b>Request in progress...</b>}
       <Filter />
+      {isLoading && !error && <b>Request in progress...</b>}
       {!isLoading && !error && <ListOfContacts />}
       <ToastContainer
         position="top-right"

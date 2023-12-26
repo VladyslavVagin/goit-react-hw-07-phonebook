@@ -14,7 +14,7 @@ const initialValues = {
 };
 
 const schema = yup.object().shape({
-  name: yup.string().min(5).max(24).required(),
+  name: yup.string().min(1).max(24).required(),
   number: yup.number().required(),
 });
 
@@ -25,7 +25,7 @@ const AddContactForm = () => {
   const handleSubmit = (data, { resetForm }) => {
     const contNames = contacts.map(contact => contact.name);
     if (!contNames.includes(data.name)) {
-      dispatch(addContact({name: data.name, phone: data.number}));
+      dispatch(addContact({name: data.name, phone: data.number.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3')}));
       resetForm();
       toast.success('Contact was ADDED');
     } else {
@@ -47,7 +47,7 @@ const AddContactForm = () => {
             className={css.input}
             required
           />
-          <span className={css.additional}>(5 - 24) symbols</span>
+          <span className={css.additional}>(1 - 24) symbols</span>
           <ErrorMessage name="name" component="span" />
         </label>
         <label className={css.label} htmlFor="number"><span className={css.astericks}>&#42;</span>Phone number:
@@ -56,9 +56,9 @@ const AddContactForm = () => {
             name="number"
             className={css.input}
             required
-            pattern="[0-9]{1,14}"
+            pattern="[0-9]{9,16}"
           />
-          <span className={css.additional}>(1 - 14) symbols</span>{' '}
+          <span className={css.additional}>(9 - 14) numbers</span>{' '}
           <ErrorMessage name="number" component="span" />{' '}
         </label>
         <button className={css.addContactBtn} type="submit">
