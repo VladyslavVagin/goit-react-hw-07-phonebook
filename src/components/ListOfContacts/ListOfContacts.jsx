@@ -1,14 +1,11 @@
 import css from './ListOfContacts.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteUser } from '../../redux/contactsSlice';
-import trashIcon from '../../icons/trash.png';
+import { useSelector } from 'react-redux';
+import { selectContacts } from '../../redux/selectors';
+import trashIcon from '../../icons/trash.png'
 
 const ListOfContacts = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(selectContacts);
 
-  const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.query)); 
 
   return (
     <div className={css.tableContainer}>
@@ -21,16 +18,15 @@ const ListOfContacts = () => {
            </tr>
         </thead>
         <tbody className={css.tbody}>
-        {filteredContacts.map(({id, name, number}) => {
+        {contacts.map(({id, name, phone}) => {
           return ( 
             <tr key={id} className={css.tr}>
                <td className={css.td}>{name}</td>
-               <td className={css.td}>{number}</td>
+               <td className={css.td}>{phone}</td>
                <td className={css.td}> <button
                 type="button"
                 className={css.deleteBtn}
                 id={id}
-                onClick={() => dispatch(deleteUser(id))}
               >
                 <img src={trashIcon} alt='trash icon' width={16}/>
               </button></td>
